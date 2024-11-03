@@ -1,0 +1,82 @@
+﻿@model IEnumerable<PaperPlanner_Application.Models.QuesPaper_Attempted_By_Users>
+
+@{
+    ViewBag.Title = "ViewSubmissions";
+}
+
+@Html.Partial("_AlertMessages")
+
+<h2>Submissions For Paper : </h2>
+
+@if (Model == null || Model.Count() == 0)
+{
+    <h3 class="text-danger text-center">No Submission Made For Your Paper Till Now !!</h3>
+}
+else
+{
+
+    <table class="table">
+        <tr>
+            <th>
+                Username
+            </th>
+            <th>
+                Full Name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Attemptedon)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalQuestions)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CorrectQuestions)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IncorrectQuestions)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.fullname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Attemptedon)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalQuestions)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CorrectQuestions)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncorrectQuestions)
+                </td>
+                <td>
+                    @*@Html.ActionLink("Edit", "Edit", new { id = item.AttemptID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.AttemptID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.AttemptID }) |*@
+                    @Html.ActionLink("View Response", "ViewResult", new { id = item.PaperID, userid = item.UserID }, new { @class = "btn btn-dark" })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+
+<p class="my-5">
+    @Html.ActionLink("Create New Question Paper", "Create", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Back to Question Papers", "Index", "QuestionPapers", null, new { @class = "btn btn-warning" })
+
+</p>
+
+@Html.Partial("_AlertScript")
+

@@ -1,0 +1,68 @@
+﻿/* Set padding to keep content from hitting the edges */
+.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    /*max-width: 280px;*/
+}
+
+/* Style for readonly radio buttons */
+.readonly-radio {
+    pointer-events: none; /* Disable pointer events */
+    opacity: 1; /* Reduce opacity to visually indicate readonly state */
+}
+
+.disabledInput {
+    background-color: #d2d2d2;
+}
+
+    .disabledInput:focus {
+        background-color: #d2d2d2;
+    }
+
+.captchaSection {
+    background-image: url(../Assets/Images/captcha_bg.png);
+    width: fit-content;
+    height: 100%;
+    margin: 0px 0px;
+}
+
+/* typical phone screen resolution */
+@media only screen and (max-width : 767px) {
+    .captchaSection {
+        margin: 20px 10px;
+    }
+}
+
+#digit1 {
+    transform: rotate(34deg);
+}
+
+#digit2 {
+    transform: rotate(10deg);
+}
+
+#digit3 {
+    transform: rotate(45deg);
+}
+
+#digit4 {
+    transform: rotate(23deg);
+}
+
+#digit5 {
+    transform: rotate(19deg);
+}

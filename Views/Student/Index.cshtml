@@ -1,0 +1,84 @@
+﻿@model Tuple<List<PaperPlanner_Application.Models.QuestionPaper>, List<PaperPlanner_Application.Models.QuestionPaper>>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@Html.Partial("_AlertMessages")
+
+<h2>All Active Question Paper</h2>
+
+@if (Model.Item1 == null || Model.Item1.Count == 0)
+{
+    <h3 class="text-success text-center">No Active Papers</h3>
+}
+else
+{
+    Model.Item1.Reverse();
+
+    @* Cards Style !! *@
+    foreach (var item in Model.Item1)
+    {
+
+        <div class="card my-4">
+            <div class="card-header fs-5 fw-bold d-flex justify-content-between">
+                <div>@item.qpTitle</div>
+            </div>
+            <div class="card-body">
+                <div class="card-title fs-6">@item.qpDescription</div>
+                <div class="">
+                    <div>Creation Date : @item.qpCreatedDate</div>
+                    <div>Created By : @item.User.fullname (@item.User.username)</div>
+                </div>
+            </div>
+            <div class="card-footer text-body-secondary">
+                <div class="d-flex justify-content-between">
+                    @{
+                        @Html.ActionLink("Attempt Paper", "AttemptPaper", "Student", new { id = item.quesPaperID }, new { @class = "btn btn-danger w-100 mx-2 " })
+                        @Html.ActionLink("View Result", "ViewResult", "Student", new { id = item.quesPaperID }, new { @class = "btn btn-success w-100 mx-2 disabled" })
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+}
+
+<hr />
+<h2>All Attempted Question Paper</h2>
+
+@if (Model.Item2 == null || Model.Item2.Count == 0)
+{
+    <h3 class="text-success text-center">No Attempted Papers</h3>
+}
+else
+{
+    Model.Item2.Reverse();
+
+    @* Cards Style !! *@
+foreach (var item in Model.Item2)
+{
+
+        <div class="card my-4">
+            <div class="card-header fs-5 fw-bold d-flex justify-content-between">
+                <div>@item.qpTitle</div>
+            </div>
+            <div class="card-body">
+                <div class="card-title fs-6">@item.qpDescription</div>
+                <div class="">
+                    <div>Creation Date : @item.qpCreatedDate</div>
+                    <div>Created By : @item.User.fullname (@item.User.username)</div>
+                </div>
+            </div>
+            <div class="card-footer text-body-secondary">
+                <div class="d-flex justify-content-between">
+                    @{
+                        @Html.ActionLink("Attempt Paper", "AttemptPaper", "Student", new { id = item.quesPaperID }, new { @class = "btn btn-danger w-100 mx-2 disabled" })
+                        @Html.ActionLink("View Result", "ViewResult", "Student", new { id = item.quesPaperID }, new { @class = "btn btn-success w-100 mx-2 " })
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}
+@Html.Partial("_AlertScript")

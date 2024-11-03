@@ -1,0 +1,120 @@
+﻿@model PaperPlanner_Application.Models.QuestionPaper
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@Html.Partial("_AlertMessages")
+
+<h2>Question Paper Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.qpTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.qpTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.qpDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.qpDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.qpCreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.qpCreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.qpStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.qpStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.username)
+        </dd>
+
+    </dl>
+    <h3>All Questions</h3>
+    <hr />
+    <dl>
+        @{int count = 0;}
+        @foreach (var questions in ViewBag.QuestionsForQP)
+        {
+            <dt>
+                @{count = count + 1;}
+                Question @count :
+            </dt>
+            <dd>
+                @questions.quesText
+            </dd>
+
+            <dd>
+                @{
+                    string[] optionsArray = questions.quesOptions.Split(',');
+
+                    foreach (string item in optionsArray)
+                    {
+                        var buttonName = "question" + questions.quesId.ToString();
+                        <div class="form-check">
+
+                            @if (item == questions.quesAnswer)
+                            {
+                                <input class="form-check-input readonly-radio" type="radio" name=@buttonName checked="checked" />
+                            }
+                            else
+                            {
+                                <input class="form-check-input readonly-radio" type="radio" name=@buttonName />
+                            }
+                            <label class="form-check-label" for="@buttonName">@item</label>
+                        </div>
+                    }
+                }
+            </dd>
+        }
+
+        @{
+            if (count == 0)
+            {
+                <div class="mb-5 text-danger fw-bold fs-5">No Questions Added till Now, Kindly Add Atleast 1 Questions to Send for Approval</div>
+            }
+        }
+    </dl>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            @{
+                if (count > 0)
+                {
+                    <input type="submit" value="Send For Approval" class="btn btn-success" />
+                }
+                else
+                {
+                    <input type="submit" value="Send For Approval" class="btn btn-success" disabled />
+                }
+            }
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-warning" })
+        </div>
+    }
+</div>
+
+@Html.Partial("_AlertScript")

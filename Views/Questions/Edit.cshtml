@@ -1,0 +1,63 @@
+﻿@model PaperPlanner_Application.Models.Question
+
+@{
+    ViewBag.Title = "Edit";
+
+    var paperid = TempData["QuesPaperID"];
+    TempData["QuesPaperID"] = paperid;
+}
+
+@Html.Partial("_AlertMessages")
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Question</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.quesId)
+
+        @Html.Hidden("quespaperid", paperid)
+
+        <div class="form-group mb-4">
+            @Html.LabelFor(model => model.quesText, htmlAttributes: new { @class = "control-label form-label" })
+            <span class="fw-bolder text-danger">*</span>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.quesText, new { htmlAttributes = new { @class = "form-control", @maxLength=50 } })
+                @Html.ValidationMessageFor(model => model.quesText, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            @Html.LabelFor(model => model.quesOptions, htmlAttributes: new { @class = "control-label form-label" })
+            <span class="fw-bolder text-danger">*</span>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.quesOptions, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.quesOptions, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            @Html.LabelFor(model => model.quesAnswer, htmlAttributes: new { @class = "control-label form-label" })
+            <span class="fw-bolder text-danger">*</span>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.quesAnswer, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.quesAnswer, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-success" />
+                @Html.ActionLink("Back to List", "Index", new { id = ViewBag.questionPaperIDInEdit }, new { @class = "btn btn-warning" })   
+            </div>
+        </div>
+    </div>
+}
+
+
+@Html.Partial("_AlertScript")

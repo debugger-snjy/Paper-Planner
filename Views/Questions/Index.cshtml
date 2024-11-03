@@ -1,0 +1,105 @@
+﻿@model IEnumerable<PaperPlanner_Application.Models.Question>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@Html.Partial("_AlertMessages")
+
+<h2>Index</h2>
+
+
+@if (Model == null || Model.Count() == 0)
+{
+    <h4 class="text-danger my-5 fw-bolder">No Questions Created !</h4>
+}
+else
+{
+    if (Model.First().QuestionPaper.qpStatus == "Sent for Approval, Approval Pending !")
+    {
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#8c6900" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+            </svg>
+            <div class="mx-2">
+                Your Question Paper is Sent for Approval, So Changes cannot be made in these questions
+            </div>
+        </div>
+    }
+    else if (Model.First().QuestionPaper.qpStatus == "Question Paper Approved !!")
+    {
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#8c6900" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+            </svg>
+            <div class="mx-2">Your Question Paper is Approved, So Changes cannot be made in these questions</div>
+        </div>
+    }
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.quesText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.quesOptions)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.quesAnswer)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.quesText)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.quesOptions)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.quesAnswer)
+                </td>
+                <td>
+                    @{
+                        if (item.QuestionPaper.qpStatus == "Created")
+                        {
+                            @Html.ActionLink("Edit", "Edit", new { id = item.quesId }, new { @class = "btn btn-dark" })
+                        }
+                        else
+                        {
+                            @*@Html.ActionLink("Edit", "Edit", new { id = item.quesId }, new { @class = "btn btn-dark disabled" })*@
+                        }
+                    }
+                    @Html.ActionLink("Details", "Details", new { id = item.quesId }, new { @class = "btn btn-warning" })
+                    @{
+                        if (item.QuestionPaper.qpStatus == "Created")
+                        {
+                            @Html.ActionLink("Delete", "Delete", new { id = item.quesId }, new { @class = "btn btn-danger" })
+                        }
+                        else
+                        {
+                            @*@Html.ActionLink("Delete", "Delete", new { id = item.quesId }, new { @class = "btn btn-danger disabled" })*@
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+
+}
+
+<div class="mt-4">
+    @Html.ActionLink("Create New Question", "Create", new { id = ViewBag.questionPaperID }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Back to Question Papers", "Index", "QuestionPapers", null, new { @class = "btn btn-dark" })
+    @{
+        if ((Session["tempData"] as PaperPlanner_Application.Models.User).role == "Admin")
+        {
+            @Html.ActionLink("Back to Pending Question Papers", "PendingQuestionPapers", "QuestionPapers", null, new { @class = "btn btn-warning" })
+        }
+    }
+</div>
+
+
+@Html.Partial("_AlertScript")

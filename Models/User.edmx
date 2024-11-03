@@ -1,0 +1,603 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PaperPlannerDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AnswersTable">
+          <Key>
+            <PropertyRef Name="AnswerId" />
+          </Key>
+          <Property Name="AnswerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="PaperID" Type="int" Nullable="false" />
+          <Property Name="QuesID" Type="int" Nullable="false" />
+          <Property Name="CorrectAns" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AttemptedAns" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AttemptDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ApprovedQuestionPapers">
+          <Key>
+            <PropertyRef Name="approveID" />
+          </Key>
+          <Property Name="approveID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="approverID" Type="int" Nullable="false" />
+          <Property Name="approverName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="approvedPaperID" Type="int" Nullable="false" />
+          <Property Name="approvalDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="approveStatus" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="QuesPaper_Attempted_By_Users">
+          <Key>
+            <PropertyRef Name="AttemptID" />
+          </Key>
+          <Property Name="AttemptID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="PaperID" Type="int" Nullable="false" />
+          <Property Name="Attemptedon" Type="datetime" />
+          <Property Name="TotalQuestions" Type="int" Nullable="false" />
+          <Property Name="CorrectQuestions" Type="int" Nullable="false" />
+          <Property Name="UnattemptedQuestions" Type="int" Nullable="false" />
+          <Property Name="IncorrectQuestions" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuestionPapers">
+          <Key>
+            <PropertyRef Name="quesPaperID" />
+          </Key>
+          <Property Name="quesPaperID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="qpTitle" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="qpCreatorID" Type="int" Nullable="false" />
+          <Property Name="qpDescription" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="qpCreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="qpStatus" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="qpApprovalSendDate" Type="datetime" />
+          <Property Name="qpApprovedDate" Type="datetime" />
+          <Property Name="qpRejectedDate" Type="datetime" />
+          <Property Name="qpUpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Questions">
+          <Key>
+            <PropertyRef Name="quesId" />
+          </Key>
+          <Property Name="quesId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="quesText" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="quesOptions" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="quesAnswer" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="quesPaperID" Type="int" Nullable="false" />
+          <Property Name="quesUpdatedDate" Type="datetime" />
+          <Property Name="quesCreationDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="fullname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password_hash" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="age" Type="int" Nullable="false" />
+          <Property Name="gender" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="role" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="updatedDate" Type="datetime" />
+          <Property Name="createdDate" Type="datetime" />
+        </EntityType>
+        <Association Name="FK__AnswersTa__Paper__4BAC3F29">
+          <End Role="QuestionPapers" Type="Self.QuestionPapers" Multiplicity="1" />
+          <End Role="AnswersTable" Type="Self.AnswersTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionPapers">
+              <PropertyRef Name="quesPaperID" />
+            </Principal>
+            <Dependent Role="AnswersTable">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AnswersTa__QuesI__4CA06362">
+          <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
+          <End Role="AnswersTable" Type="Self.AnswersTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="quesId" />
+            </Principal>
+            <Dependent Role="AnswersTable">
+              <PropertyRef Name="QuesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AnswersTa__UserI__4AB81AF0">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="AnswersTable" Type="Self.AnswersTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="AnswersTable">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ApprovedQ__appro__44FF419A">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="ApprovedQuestionPapers" Type="Self.ApprovedQuestionPapers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="ApprovedQuestionPapers">
+              <PropertyRef Name="approverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ApprovedQ__appro__45F365D3">
+          <End Role="QuestionPapers" Type="Self.QuestionPapers" Multiplicity="1" />
+          <End Role="ApprovedQuestionPapers" Type="Self.ApprovedQuestionPapers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionPapers">
+              <PropertyRef Name="quesPaperID" />
+            </Principal>
+            <Dependent Role="ApprovedQuestionPapers">
+              <PropertyRef Name="approvedPaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QuesPaper__Paper__5165187F">
+          <End Role="QuestionPapers" Type="Self.QuestionPapers" Multiplicity="1" />
+          <End Role="QuesPaper_Attempted_By_Users" Type="Self.QuesPaper_Attempted_By_Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionPapers">
+              <PropertyRef Name="quesPaperID" />
+            </Principal>
+            <Dependent Role="QuesPaper_Attempted_By_Users">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QuesPaper__UserI__5070F446">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="QuesPaper_Attempted_By_Users" Type="Self.QuesPaper_Attempted_By_Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="QuesPaper_Attempted_By_Users">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QuestionP__qpCre__398D8EEE">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="QuestionPapers" Type="Self.QuestionPapers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="QuestionPapers">
+              <PropertyRef Name="qpCreatorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Questions__quesP__3D5E1FD2">
+          <End Role="QuestionPapers" Type="Self.QuestionPapers" Multiplicity="1" />
+          <End Role="Questions" Type="Self.Questions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionPapers">
+              <PropertyRef Name="quesPaperID" />
+            </Principal>
+            <Dependent Role="Questions">
+              <PropertyRef Name="quesPaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PaperPlannerDBModelStoreContainer">
+          <EntitySet Name="AnswersTable" EntityType="Self.AnswersTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApprovedQuestionPapers" EntityType="Self.ApprovedQuestionPapers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuesPaper_Attempted_By_Users" EntityType="Self.QuesPaper_Attempted_By_Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestionPapers" EntityType="Self.QuestionPapers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Questions" EntityType="Self.Questions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__AnswersTa__Paper__4BAC3F29" Association="Self.FK__AnswersTa__Paper__4BAC3F29">
+            <End Role="QuestionPapers" EntitySet="QuestionPapers" />
+            <End Role="AnswersTable" EntitySet="AnswersTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AnswersTa__QuesI__4CA06362" Association="Self.FK__AnswersTa__QuesI__4CA06362">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="AnswersTable" EntitySet="AnswersTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AnswersTa__UserI__4AB81AF0" Association="Self.FK__AnswersTa__UserI__4AB81AF0">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="AnswersTable" EntitySet="AnswersTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ApprovedQ__appro__44FF419A" Association="Self.FK__ApprovedQ__appro__44FF419A">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ApprovedQuestionPapers" EntitySet="ApprovedQuestionPapers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ApprovedQ__appro__45F365D3" Association="Self.FK__ApprovedQ__appro__45F365D3">
+            <End Role="QuestionPapers" EntitySet="QuestionPapers" />
+            <End Role="ApprovedQuestionPapers" EntitySet="ApprovedQuestionPapers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QuesPaper__Paper__5165187F" Association="Self.FK__QuesPaper__Paper__5165187F">
+            <End Role="QuestionPapers" EntitySet="QuestionPapers" />
+            <End Role="QuesPaper_Attempted_By_Users" EntitySet="QuesPaper_Attempted_By_Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QuesPaper__UserI__5070F446" Association="Self.FK__QuesPaper__UserI__5070F446">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="QuesPaper_Attempted_By_Users" EntitySet="QuesPaper_Attempted_By_Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QuestionP__qpCre__398D8EEE" Association="Self.FK__QuestionP__qpCre__398D8EEE">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="QuestionPapers" EntitySet="QuestionPapers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Questions__quesP__3D5E1FD2" Association="Self.FK__Questions__quesP__3D5E1FD2">
+            <End Role="QuestionPapers" EntitySet="QuestionPapers" />
+            <End Role="Questions" EntitySet="Questions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PaperPlannerDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password_hash" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="fullname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="age" Type="Int32" Nullable="false" />
+          <Property Name="gender" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="QuestionPapers" Relationship="PaperPlannerDBModel.FK__QuestionP__qpCre__778AC167" FromRole="User" ToRole="QuestionPaper" />
+          <NavigationProperty Name="ApprovedQuestionPapers" Relationship="PaperPlannerDBModel.FK__ApprovedQ__appro__44FF419A" FromRole="User" ToRole="ApprovedQuestionPaper" />
+          <Property Name="updatedDate" Type="DateTime" Precision="3" />
+          <Property Name="createdDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AnswersTables" Relationship="PaperPlannerDBModel.FK__AnswersTa__UserI__4AB81AF0" FromRole="User" ToRole="AnswersTable" />
+          <NavigationProperty Name="QuesPaper_Attempted_By_Users" Relationship="PaperPlannerDBModel.FK__QuesPaper__UserI__5070F446" FromRole="User" ToRole="QuesPaper_Attempted_By_Users" />
+        </EntityType>
+        <EntityContainer Name="PaperPlannerDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="QuestionPapers" EntityType="PaperPlannerDBModel.QuestionPaper" />
+          <AssociationSet Name="FK__QuestionP__qpCre__778AC167" Association="PaperPlannerDBModel.FK__QuestionP__qpCre__778AC167">
+            <End Role="User" EntitySet="Users" />
+            <End Role="QuestionPaper" EntitySet="QuestionPapers" />
+          </AssociationSet>
+          <EntitySet Name="Questions" EntityType="PaperPlannerDBModel.Question" />
+          <AssociationSet Name="FK__Questions__quesP__7F2BE32F" Association="PaperPlannerDBModel.FK__Questions__quesP__7F2BE32F">
+            <End Role="QuestionPaper" EntitySet="QuestionPapers" />
+            <End Role="Question" EntitySet="Questions" />
+          </AssociationSet>
+          <EntitySet Name="ApprovedQuestionPapers" EntityType="PaperPlannerDBModel.ApprovedQuestionPaper" />
+          <AssociationSet Name="FK__ApprovedQ__appro__44FF419A" Association="PaperPlannerDBModel.FK__ApprovedQ__appro__44FF419A">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ApprovedQuestionPaper" EntitySet="ApprovedQuestionPapers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ApprovedQ__appro__45F365D3" Association="PaperPlannerDBModel.FK__ApprovedQ__appro__45F365D3">
+            <End Role="QuestionPaper" EntitySet="QuestionPapers" />
+            <End Role="ApprovedQuestionPaper" EntitySet="ApprovedQuestionPapers" />
+          </AssociationSet>
+          <EntitySet Name="AnswersTables" EntityType="PaperPlannerDBModel.AnswersTable" />
+          <EntitySet Name="QuesPaper_Attempted_By_Users" EntityType="PaperPlannerDBModel.QuesPaper_Attempted_By_Users" />
+          <AssociationSet Name="FK__AnswersTa__Paper__4BAC3F29" Association="PaperPlannerDBModel.FK__AnswersTa__Paper__4BAC3F29">
+            <End Role="QuestionPaper" EntitySet="QuestionPapers" />
+            <End Role="AnswersTable" EntitySet="AnswersTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AnswersTa__QuesI__4CA06362" Association="PaperPlannerDBModel.FK__AnswersTa__QuesI__4CA06362">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="AnswersTable" EntitySet="AnswersTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AnswersTa__UserI__4AB81AF0" Association="PaperPlannerDBModel.FK__AnswersTa__UserI__4AB81AF0">
+            <End Role="User" EntitySet="Users" />
+            <End Role="AnswersTable" EntitySet="AnswersTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QuesPaper__Paper__5165187F" Association="PaperPlannerDBModel.FK__QuesPaper__Paper__5165187F">
+            <End Role="QuestionPaper" EntitySet="QuestionPapers" />
+            <End Role="QuesPaper_Attempted_By_Users" EntitySet="QuesPaper_Attempted_By_Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QuesPaper__UserI__5070F446" Association="PaperPlannerDBModel.FK__QuesPaper__UserI__5070F446">
+            <End Role="User" EntitySet="Users" />
+            <End Role="QuesPaper_Attempted_By_Users" EntitySet="QuesPaper_Attempted_By_Users" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="QuestionPaper">
+          <Key>
+            <PropertyRef Name="quesPaperID" />
+          </Key>
+          <Property Name="quesPaperID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="qpTitle" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="qpCreatorID" Type="Int32" Nullable="false" />
+          <Property Name="qpDescription" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="qpCreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="qpStatus" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="User" Relationship="PaperPlannerDBModel.FK__QuestionP__qpCre__778AC167" FromRole="QuestionPaper" ToRole="User" />
+          <NavigationProperty Name="Questions" Relationship="PaperPlannerDBModel.FK__Questions__quesP__7F2BE32F" FromRole="QuestionPaper" ToRole="Question" />
+          <NavigationProperty Name="ApprovedQuestionPapers" Relationship="PaperPlannerDBModel.FK__ApprovedQ__appro__45F365D3" FromRole="QuestionPaper" ToRole="ApprovedQuestionPaper" />
+          <Property Name="qpApprovalSendDate" Type="DateTime" Precision="3" />
+          <Property Name="qpApprovedDate" Type="DateTime" Precision="3" />
+          <Property Name="qpRejectedDate" Type="DateTime" Precision="3" />
+          <Property Name="qpUpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AnswersTables" Relationship="PaperPlannerDBModel.FK__AnswersTa__Paper__4BAC3F29" FromRole="QuestionPaper" ToRole="AnswersTable" />
+          <NavigationProperty Name="QuesPaper_Attempted_By_Users" Relationship="PaperPlannerDBModel.FK__QuesPaper__Paper__5165187F" FromRole="QuestionPaper" ToRole="QuesPaper_Attempted_By_Users" />
+        </EntityType>
+        <Association Name="FK__QuestionP__qpCre__778AC167">
+          <End Type="PaperPlannerDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="PaperPlannerDBModel.QuestionPaper" Role="QuestionPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="QuestionPaper">
+              <PropertyRef Name="qpCreatorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="quesId" />
+          </Key>
+          <Property Name="quesId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="quesText" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="quesOptions" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="quesAnswer" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="quesPaperID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="QuestionPaper" Relationship="PaperPlannerDBModel.FK__Questions__quesP__7F2BE32F" FromRole="Question" ToRole="QuestionPaper" />
+          <Property Name="quesUpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="quesCreationDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AnswersTables" Relationship="PaperPlannerDBModel.FK__AnswersTa__QuesI__4CA06362" FromRole="Question" ToRole="AnswersTable" />
+        </EntityType>
+        <Association Name="FK__Questions__quesP__7F2BE32F">
+          <End Type="PaperPlannerDBModel.QuestionPaper" Role="QuestionPaper" Multiplicity="1" />
+          <End Type="PaperPlannerDBModel.Question" Role="Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionPaper">
+              <PropertyRef Name="quesPaperID" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="quesPaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ApprovedQuestionPaper">
+          <Key>
+            <PropertyRef Name="approveID" />
+          </Key>
+          <Property Name="approveID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="approverID" Type="Int32" Nullable="false" />
+          <Property Name="approverName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="approvedPaperID" Type="Int32" Nullable="false" />
+          <Property Name="approvalDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="User" Relationship="PaperPlannerDBModel.FK__ApprovedQ__appro__44FF419A" FromRole="ApprovedQuestionPaper" ToRole="User" />
+          <NavigationProperty Name="QuestionPaper" Relationship="PaperPlannerDBModel.FK__ApprovedQ__appro__45F365D3" FromRole="ApprovedQuestionPaper" ToRole="QuestionPaper" />
+          <Property Name="approveStatus" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK__ApprovedQ__appro__44FF419A">
+          <End Type="PaperPlannerDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="PaperPlannerDBModel.ApprovedQuestionPaper" Role="ApprovedQuestionPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="ApprovedQuestionPaper">
+              <PropertyRef Name="approverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ApprovedQ__appro__45F365D3">
+          <End Type="PaperPlannerDBModel.QuestionPaper" Role="QuestionPaper" Multiplicity="1" />
+          <End Type="PaperPlannerDBModel.ApprovedQuestionPaper" Role="ApprovedQuestionPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionPaper">
+              <PropertyRef Name="quesPaperID" />
+            </Principal>
+            <Dependent Role="ApprovedQuestionPaper">
+              <PropertyRef Name="approvedPaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AnswersTable">
+          <Key>
+            <PropertyRef Name="AnswerId" />
+          </Key>
+          <Property Name="AnswerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="PaperID" Type="Int32" Nullable="false" />
+          <Property Name="QuesID" Type="Int32" Nullable="false" />
+          <Property Name="CorrectAns" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AttemptedAns" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AttemptDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="QuestionPaper" Relationship="PaperPlannerDBModel.FK__AnswersTa__Paper__4BAC3F29" FromRole="AnswersTable" ToRole="QuestionPaper" />
+          <NavigationProperty Name="Question" Relationship="PaperPlannerDBModel.FK__AnswersTa__QuesI__4CA06362" FromRole="AnswersTable" ToRole="Question" />
+          <NavigationProperty Name="User" Relationship="PaperPlannerDBModel.FK__AnswersTa__UserI__4AB81AF0" FromRole="AnswersTable" ToRole="User" />
+        </EntityType>
+        <EntityType Name="QuesPaper_Attempted_By_Users">
+          <Key>
+            <PropertyRef Name="AttemptID" />
+          </Key>
+          <Property Name="AttemptID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="PaperID" Type="Int32" Nullable="false" />
+          <Property Name="Attemptedon" Type="DateTime" Precision="3" />
+          <Property Name="TotalQuestions" Type="Int32" Nullable="false" />
+          <Property Name="CorrectQuestions" Type="Int32" Nullable="false" />
+          <Property Name="UnattemptedQuestions" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="QuestionPaper" Relationship="PaperPlannerDBModel.FK__QuesPaper__Paper__5165187F" FromRole="QuesPaper_Attempted_By_Users" ToRole="QuestionPaper" />
+          <NavigationProperty Name="User" Relationship="PaperPlannerDBModel.FK__QuesPaper__UserI__5070F446" FromRole="QuesPaper_Attempted_By_Users" ToRole="User" />
+          <Property Name="IncorrectQuestions" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__AnswersTa__Paper__4BAC3F29">
+          <End Type="PaperPlannerDBModel.QuestionPaper" Role="QuestionPaper" Multiplicity="1" />
+          <End Type="PaperPlannerDBModel.AnswersTable" Role="AnswersTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionPaper">
+              <PropertyRef Name="quesPaperID" />
+            </Principal>
+            <Dependent Role="AnswersTable">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AnswersTa__QuesI__4CA06362">
+          <End Type="PaperPlannerDBModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="PaperPlannerDBModel.AnswersTable" Role="AnswersTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="quesId" />
+            </Principal>
+            <Dependent Role="AnswersTable">
+              <PropertyRef Name="QuesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AnswersTa__UserI__4AB81AF0">
+          <End Type="PaperPlannerDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="PaperPlannerDBModel.AnswersTable" Role="AnswersTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="AnswersTable">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QuesPaper__Paper__5165187F">
+          <End Type="PaperPlannerDBModel.QuestionPaper" Role="QuestionPaper" Multiplicity="1" />
+          <End Type="PaperPlannerDBModel.QuesPaper_Attempted_By_Users" Role="QuesPaper_Attempted_By_Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuestionPaper">
+              <PropertyRef Name="quesPaperID" />
+            </Principal>
+            <Dependent Role="QuesPaper_Attempted_By_Users">
+              <PropertyRef Name="PaperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QuesPaper__UserI__5070F446">
+          <End Type="PaperPlannerDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="PaperPlannerDBModel.QuesPaper_Attempted_By_Users" Role="QuesPaper_Attempted_By_Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="QuesPaper_Attempted_By_Users">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PaperPlannerDBModelStoreContainer" CdmEntityContainer="PaperPlannerDBEntities">
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="PaperPlannerDBModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="updatedDate" ColumnName="updatedDate" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="age" ColumnName="age" />
+                <ScalarProperty Name="fullname" ColumnName="fullname" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password_hash" ColumnName="password_hash" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="role" ColumnName="role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestionPapers">
+            <EntityTypeMapping TypeName="PaperPlannerDBModel.QuestionPaper">
+              <MappingFragment StoreEntitySet="QuestionPapers">
+                <ScalarProperty Name="qpUpdatedDate" ColumnName="qpUpdatedDate" />
+                <ScalarProperty Name="qpRejectedDate" ColumnName="qpRejectedDate" />
+                <ScalarProperty Name="qpApprovedDate" ColumnName="qpApprovedDate" />
+                <ScalarProperty Name="qpApprovalSendDate" ColumnName="qpApprovalSendDate" />
+                <ScalarProperty Name="qpStatus" ColumnName="qpStatus" />
+                <ScalarProperty Name="qpCreatedDate" ColumnName="qpCreatedDate" />
+                <ScalarProperty Name="qpDescription" ColumnName="qpDescription" />
+                <ScalarProperty Name="qpCreatorID" ColumnName="qpCreatorID" />
+                <ScalarProperty Name="qpTitle" ColumnName="qpTitle" />
+                <ScalarProperty Name="quesPaperID" ColumnName="quesPaperID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questions">
+            <EntityTypeMapping TypeName="PaperPlannerDBModel.Question">
+              <MappingFragment StoreEntitySet="Questions">
+                <ScalarProperty Name="quesCreationDate" ColumnName="quesCreationDate" />
+                <ScalarProperty Name="quesUpdatedDate" ColumnName="quesUpdatedDate" />
+                <ScalarProperty Name="quesPaperID" ColumnName="quesPaperID" />
+                <ScalarProperty Name="quesAnswer" ColumnName="quesAnswer" />
+                <ScalarProperty Name="quesOptions" ColumnName="quesOptions" />
+                <ScalarProperty Name="quesText" ColumnName="quesText" />
+                <ScalarProperty Name="quesId" ColumnName="quesId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApprovedQuestionPapers">
+            <EntityTypeMapping TypeName="PaperPlannerDBModel.ApprovedQuestionPaper">
+              <MappingFragment StoreEntitySet="ApprovedQuestionPapers">
+                <ScalarProperty Name="approveStatus" ColumnName="approveStatus" />
+                <ScalarProperty Name="approvalDate" ColumnName="approvalDate" />
+                <ScalarProperty Name="approvedPaperID" ColumnName="approvedPaperID" />
+                <ScalarProperty Name="approverName" ColumnName="approverName" />
+                <ScalarProperty Name="approverID" ColumnName="approverID" />
+                <ScalarProperty Name="approveID" ColumnName="approveID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AnswersTables">
+            <EntityTypeMapping TypeName="PaperPlannerDBModel.AnswersTable">
+              <MappingFragment StoreEntitySet="AnswersTable">
+                <ScalarProperty Name="AttemptDate" ColumnName="AttemptDate" />
+                <ScalarProperty Name="AttemptedAns" ColumnName="AttemptedAns" />
+                <ScalarProperty Name="CorrectAns" ColumnName="CorrectAns" />
+                <ScalarProperty Name="QuesID" ColumnName="QuesID" />
+                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="AnswerId" ColumnName="AnswerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuesPaper_Attempted_By_Users">
+            <EntityTypeMapping TypeName="PaperPlannerDBModel.QuesPaper_Attempted_By_Users">
+              <MappingFragment StoreEntitySet="QuesPaper_Attempted_By_Users">
+                <ScalarProperty Name="IncorrectQuestions" ColumnName="IncorrectQuestions" />
+                <ScalarProperty Name="UnattemptedQuestions" ColumnName="UnattemptedQuestions" />
+                <ScalarProperty Name="CorrectQuestions" ColumnName="CorrectQuestions" />
+                <ScalarProperty Name="TotalQuestions" ColumnName="TotalQuestions" />
+                <ScalarProperty Name="Attemptedon" ColumnName="Attemptedon" />
+                <ScalarProperty Name="PaperID" ColumnName="PaperID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="AttemptID" ColumnName="AttemptID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

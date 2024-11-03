@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+@Html.Partial("_AlertMessages")
+
+<h2>Welcome Admin !!</h2>
+
+<hr />
+
+<div class="d-flex flex-row">
+    @Html.ActionLink("Users", "Index", "User", null, new { @class = "d-block w-100 mx-2 fs-5 fw-bold p-4 btn btn-warning" })
+
+    @Html.ActionLink("Question Papers", "Index", "QuestionPapers", null, new { @class = "d-block w-100 mx-2 fs-5 fw-bold p-4 btn btn-warning" })
+
+    @Html.ActionLink("Approval Remaining Papers", "PendingQuestionPapers", "QuestionPapers", null, new { @class = "d-block w-100 mx-2 fs-5 fw-bold p-4 btn btn-warning" })
+
+</div>
+
+@Html.Partial("_AlertScript")

@@ -1,0 +1,125 @@
+﻿@model PaperPlanner_Application.Models.QuestionPaper
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@Html.Partial("_AlertMessages")
+
+<h2>Details</h2>
+
+<div>
+    <h4>QuestionPaper</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.qpTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.qpTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.qpDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.qpDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.qpCreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.qpCreatedDate)
+        </dd>
+
+        @{
+            if (@Html.DisplayFor(model => model.qpUpdatedDate) != null && @Html.DisplayFor(model => model.qpUpdatedDate).ToString() != "")
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.qpUpdatedDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.qpUpdatedDate)
+                </dd>
+            }
+        }
+
+        <dt>
+            @Html.DisplayNameFor(model => model.qpStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.qpStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.username)
+        </dd>
+
+    </dl>
+    <h3>All Questions</h3>
+    <hr />
+    <dl>
+        @{int count = 0;}
+        @foreach (var questions in ViewBag.QuestionsForQP)
+        {
+            <dt>
+                @{count = count + 1;}
+                Question @count :
+            </dt>
+            <dd>
+                @questions.quesText
+            </dd>
+
+            <dd>
+                @{
+                    string[] optionsArray = questions.quesOptions.Split(',');
+
+                    foreach (string item in optionsArray)
+                    {
+                        var buttonName = "question" + questions.quesId.ToString();
+                        <div class="form-check">
+
+                            @if (item.Trim(' ') == questions.quesAnswer)
+                            {
+                                <input class="form-check-input readonly-radio" type="radio" name=@buttonName checked="checked" />
+                            }
+                            else
+                            {
+                                <input class="form-check-input readonly-radio" type="radio" name=@buttonName />
+                            }
+                            <label class="form-check-label" for="question1">@item</label>
+                        </div>
+                    }
+                }
+            </dd>
+        }
+    </dl>
+    @{
+        if (count == 0)
+        {
+            <div class="mb-5 text-danger fw-bold fs-5">No Questions Added till Now</div>
+        }
+    }
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.quesPaperID }, new { @class = "btn btn-success" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-dark" })
+    @{
+        if ((Session["tempData"] as PaperPlanner_Application.Models.User).role == "Admin")
+        {
+            @Html.ActionLink("Back to Pending Question Papers", "PendingQuestionPapers", "QuestionPapers", null, new { @class = "btn btn-warning" })
+        }
+    }
+
+</p>
+@Html.Partial("_AlertScript")

@@ -1,0 +1,161 @@
+﻿@model PaperPlanner_Application.Models.User
+
+@{
+    ViewBag.Title = "Signup";
+}
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+
+@Html.Partial("_AlertMessages")
+
+<h2>Sign up</h2>
+
+@using (@Html.BeginForm(""))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group mb-4">
+            @Html.LabelFor(model => model.username, htmlAttributes: new { @class = "control-label form-label" })
+            <span class="fw-bolder text-danger">*</span>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control", autoComplete = "off", @id = "username" } })
+                @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group mb-4">
+            @Html.LabelFor(model => model.password_hash, htmlAttributes: new { @class = "control-label form-label" })
+            <span class="fw-bolder text-danger">*</span>
+
+            @* Resolved BUG 06 : Added the Password Instructions & min length and max length to set te length of the password*@
+            <div class="mx-1 mt-0 mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="grey" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                </svg>
+                <small class="text-black-50">Password Length should be Minimum 8 Characters & Maximum 20 Characters</small>
+                <br />
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="grey" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                </svg>
+                <small class="text-black-50">Spaces are not allowed</small>
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.password_hash, new { htmlAttributes = new { @id = "password", @class = "form-control", @minLength = "8", @maxLength = "20", @autocomplete = "off" } })
+
+                <div class="mt-2 mb-1">
+                    <input type="checkbox" name="showPass" id="showPassword" />
+                    Show Password
+                </div>
+
+                @Html.ValidationMessageFor(model => model.password_hash, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "control-label form-label" })
+            <span class="fw-bolder text-danger">*</span>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            @Html.LabelFor(model => model.role, htmlAttributes: new { @class = "control-label form-label" })
+            <span class="fw-bolder text-danger">*</span>
+            <div class="col-md-10">
+                @* No Need for the Edit Textbox *@
+                @* @Html.EditorFor(model => model.role, new { htmlAttributes = new { @class = "form-control" } }) *@
+                @* Using the HTML Helper for the Role *@
+                @Html.DropDownListFor(model => model.role, new SelectList(new[] { "Student", "Teacher" }), "Select Your Role", new { @class = "control-select form-select col-md-2" })
+                @Html.ValidationMessageFor(model => model.role, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            @Html.LabelFor(model => model.fullname, htmlAttributes: new { @class = "control-label form-label" })
+            <span class="fw-bolder text-danger">*</span>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.fullname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.fullname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            @Html.LabelFor(model => model.age, htmlAttributes: new { @class = "control-label form-label" })
+            <span class="fw-bolder text-danger">*</span>
+            <div class="col-md-10">
+                @* Resolved BUG 04 : Added the min as 0 to not allow user to add age below 0 i.e, negative *@
+                @Html.EditorFor(model => model.age, new { htmlAttributes = new { @class = "form-control", @min = "0" } })
+                @Html.ValidationMessageFor(model => model.age, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            @Html.LabelFor(model => model.gender, htmlAttributes: new { @class = "control-label form-label" })
+            <span class="fw-bolder text-danger">*</span>
+            <div class="col-md-10">
+                @* No Need for the Edit Textbox *@
+                @*@Html.EditorFor(model => model.gender, new { htmlAttributes = new { @class = "form-control" } })*@
+                @* Using the HTML Helper for the Gender *@
+                @Html.DropDownListFor(model => model.gender, new SelectList(new[] { "Male", "Female", "Others" }), "Select Gender", new { @class = "control-select form-select" })
+                @Html.ValidationMessageFor(model => model.gender, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Signup" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Already Have an Account", "Index", null, new { @class = "pb-5" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            // Disable autocomplete for all fields with class "noAutoComplete"
+            $(".noAutoComplete").attr("autocomplete", "off");
+
+            // Clear autocomplete values for specific fields
+            $("#username, #password").val("");
+            $("#username, #password").text("");
+
+            $("#password").on("keyup", function (e) {
+                console.log("Hello User Password !!")
+                $(this).val($(this).val().toString().replace(" ", ""));
+            });
+
+            $("#showPassword").on("click", function (e) {
+                if ($("#showPassword").prop("checked") === true) {
+                    console.log("Showing Password !!")
+                    $("#password").attr("type", "text")
+                }
+                else {
+                    console.log("hiding Password !!")
+                    $("#password").attr("type", "password");
+                }
+            })
+        });
+
+
+    </script>
+}
+
+@Html.Partial("_AlertScript")

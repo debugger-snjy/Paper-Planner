@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="53bb6b4332f14f7aa25f8656bc267ecd" Name="Diagram1" ZoomLevel="93">
+        <EntityTypeShape EntityType="PaperPlannerDBModel.User" Width="1.5" PointX="1" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PaperPlannerDBModel.QuestionPaper" Width="1.5" PointX="3.25" PointY="4" />
+        <AssociationConnector Association="PaperPlannerDBModel.FK__QuestionP__qpCre__778AC167" />
+        <EntityTypeShape EntityType="PaperPlannerDBModel.Question" Width="1.5" PointX="5.5" PointY="4.25" />
+        <AssociationConnector Association="PaperPlannerDBModel.FK__Questions__quesP__7F2BE32F" />
+        <EntityTypeShape EntityType="PaperPlannerDBModel.ApprovedQuestionPaper" Width="1.5" PointX="5.5" PointY="7.125" />
+        <AssociationConnector Association="PaperPlannerDBModel.FK__ApprovedQ__appro__44FF419A" />
+        <AssociationConnector Association="PaperPlannerDBModel.FK__ApprovedQ__appro__45F365D3" />
+        <EntityTypeShape EntityType="PaperPlannerDBModel.AnswersTable" Width="1.5" PointX="8.25" PointY="0.5" />
+        <EntityTypeShape EntityType="PaperPlannerDBModel.QuesPaper_Attempted_By_Users" Width="1.5" PointX="2" PointY="0.5" />
+        <AssociationConnector Association="PaperPlannerDBModel.FK__AnswersTa__Paper__4BAC3F29" />
+        <AssociationConnector Association="PaperPlannerDBModel.FK__AnswersTa__QuesI__4CA06362" />
+        <AssociationConnector Association="PaperPlannerDBModel.FK__AnswersTa__UserI__4AB81AF0" />
+        <AssociationConnector Association="PaperPlannerDBModel.FK__QuesPaper__Paper__5165187F" />
+        <AssociationConnector Association="PaperPlannerDBModel.FK__QuesPaper__UserI__5070F446" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

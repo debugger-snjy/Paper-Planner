@@ -1,0 +1,142 @@
+﻿@model IEnumerable<PaperPlanner_Application.Models.QuestionPaper>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@Html.Partial("_AlertMessages")
+
+<h2>Index</h2>
+
+@* Cards Style !! *@
+@if (Model.Count() == 0)
+{
+    <div class="my-5 text-danger fw-bold fs-3">No Question Paper Created !!</div>
+    <p>
+        @Html.ActionLink("Create New Question Paper", "Create", "QuestionPapers", null, new { @class = "btn btn-primary w-50 d-block mx-auto p-2" })
+    </p>
+
+}
+else
+{
+    <p>
+        @Html.ActionLink("Create New Question Paper", "Create", "QuestionPapers", null, new { @class = "btn btn-primary w-50 d-block mx-auto p-2" })
+    </p>
+
+    foreach (var item in Model.Reverse())
+    {
+        if ((Session["tempData"] as PaperPlanner_Application.Models.User).role == "Admin")
+        {
+            if (item.qpStatus != "Created" || (item.qpStatus == "Created" && (item.User.username == (Session["tempData"] as PaperPlanner_Application.Models.User).username)))
+            {
+                <div class="card my-4">
+                    <div class="card-header fs-5 fw-bold d-flex justify-content-between">
+                        <div>@item.qpTitle</div>
+                        @{
+                            if (item.qpStatus == "Created")
+                            {
+                                <div class="text-danger">Status : @item.qpStatus</div>
+                            }
+                            else if (item.qpStatus == "Sent for Approval, Approval Pending !")
+                            {
+                                <div class="text-warning">Status : @item.qpStatus</div>
+                            }
+                            else
+                            {
+                                <div class="text-success">Status : @item.qpStatus</div>
+                            }
+                        }
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title fs-6">@item.qpDescription</div>
+                        <div class="">
+                            <div>Creation Date : @item.qpCreatedDate</div>
+                            <div>Created By : @item.User.username (@item.User.role)</div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-body-secondary">
+                        <div class="d-flex justify-content-between">
+                            @{
+                                if (item.qpStatus == "Created" || item.qpStatus == "Question Paper Rejected !!")
+                                {
+                                    @Html.ActionLink("Add Questions", "Create", "Questions", new { id = item.quesPaperID }, new { @class = "btn btn-primary w-100 mx-2" })
+                                    @Html.ActionLink("Edit Question Paper", "Edit", new { id = item.quesPaperID }, new { @class = "btn btn-warning w-100 mx-2" })
+                                    @Html.ActionLink("View Questions", "Index", "Questions", new { id = item.quesPaperID }, new { @class = "btn btn-dark w-100 mx-2" })
+                                    @Html.ActionLink("View Question Paper", "Details", new { id = item.quesPaperID }, new { @class = "btn btn-dark w-100 mx-2" })
+                                    @Html.ActionLink("Delete Question paper", "Delete", new { id = item.quesPaperID }, new { @class = "btn btn-danger w-100 mx-2" })
+                                    @Html.ActionLink("Send For Approval", "SendForApproval", new { id = item.quesPaperID }, new { @class = "btn btn-success w-100 mx-2" })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Add Questions", "Create", "Questions", new { id = item.quesPaperID }, new { @class = "btn btn-primary w-100 mx-2 disabled" })
+                                    @Html.ActionLink("Edit Question Paper", "Edit", new { id = item.quesPaperID }, new { @class = "btn btn-warning w-100 mx-2 disabled" })
+                                    @Html.ActionLink("View Questions", "Index", "Questions", new { id = item.quesPaperID }, new { @class = "btn btn-dark w-100 mx-2" })
+                                    @Html.ActionLink("View Question Paper", "Details", new { id = item.quesPaperID }, new { @class = "btn btn-dark w-100 mx-2" })
+                                    @Html.ActionLink("Delete Question paper", "Delete", new { id = item.quesPaperID }, new { @class = "btn btn-danger w-100 mx-2 disabled" })
+                                    @Html.ActionLink("Send For Approval", "SendForApproval", new { id = item.quesPaperID }, new { @class = "btn btn-success w-100 mx-2 disabled" })
+                                    @Html.ActionLink("View Submissions", "ViewSubmissions", new { id = item.quesPaperID }, new { @class = "btn btn-success w-100 mx-2" })
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="card my-4">
+                <div class="card-header fs-5 fw-bold d-flex justify-content-between">
+                    <div>@item.qpTitle</div>
+                    @{
+                        if (item.qpStatus == "Created")
+                        {
+                            <div class="text-danger">Status : @item.qpStatus</div>
+                        }
+                        else if (item.qpStatus == "Sent for Approval, Approval Pending !")
+                        {
+                            <div class="text-warning">Status : @item.qpStatus</div>
+                        }
+                        else
+                        {
+                            <div class="text-success">Status : @item.qpStatus</div>
+                        }
+                    }
+                </div>
+                <div class="card-body">
+                    <div class="card-title fs-6">@item.qpDescription</div>
+                    <div class="">
+                        <div>Creation Date : @item.qpCreatedDate</div>
+                        <div>Created By : @item.User.username (@item.User.role)</div>
+                    </div>
+                </div>
+                <div class="card-footer text-body-secondary">
+                    <div class="d-flex justify-content-between">
+                        @{
+                            if (item.qpStatus == "Created" || item.qpStatus == "Question Paper Rejected !!")
+                            {
+                                @Html.ActionLink("Add Questions", "Create", "Questions", new { id = item.quesPaperID }, new { @class = "btn btn-primary w-100 mx-2" })
+                                @Html.ActionLink("Edit Question Paper", "Edit", new { id = item.quesPaperID }, new { @class = "btn btn-warning w-100 mx-2" })
+                                @Html.ActionLink("View Questions", "Index", "Questions", new { id = item.quesPaperID }, new { @class = "btn btn-dark w-100 mx-2" })
+                                @Html.ActionLink("View Question Paper", "Details", new { id = item.quesPaperID }, new { @class = "btn btn-dark w-100 mx-2" })
+                                @Html.ActionLink("Delete Question paper", "Delete", new { id = item.quesPaperID }, new { @class = "btn btn-danger w-100 mx-2" })
+                                @Html.ActionLink("Send For Approval", "SendForApproval", new { id = item.quesPaperID }, new { @class = "btn btn-success w-100 mx-2" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Add Questions", "Create", "Questions", new { id = item.quesPaperID }, new { @class = "btn btn-primary w-100 mx-2 disabled" })
+                                @Html.ActionLink("Edit Question Paper", "Edit", new { id = item.quesPaperID }, new { @class = "btn btn-warning w-100 mx-2 disabled" })
+                                @Html.ActionLink("View Questions", "Index", "Questions", new { id = item.quesPaperID }, new { @class = "btn btn-dark w-100 mx-2" })
+                                @Html.ActionLink("View Question Paper", "Details", new { id = item.quesPaperID }, new { @class = "btn btn-dark w-100 mx-2" })
+                                @Html.ActionLink("Delete Question paper", "Delete", new { id = item.quesPaperID }, new { @class = "btn btn-danger w-100 mx-2 disabled" })
+                                @Html.ActionLink("Send For Approval", "SendForApproval", new { id = item.quesPaperID }, new { @class = "btn btn-success w-100 mx-2 disabled" })
+                                @Html.ActionLink("View Submissions", "ViewSubmissions", new { id = item.quesPaperID }, new { @class = "btn btn-success w-100 mx-2" })
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+
+        }
+    }
+}
+@Html.Partial("_AlertScript")

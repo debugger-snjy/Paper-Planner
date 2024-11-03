@@ -1,0 +1,145 @@
+﻿@model PaperPlanner_Application.Models.User
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+
+    </script>
+</head>
+
+@Html.Partial("_AlertMessages")
+
+<h2>Login</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group mb-4">
+            @Html.LabelFor(model => model.username, htmlAttributes: new { @class = "control-label form-label" })
+            <span class="fw-bolder text-danger">*</span>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            @Html.LabelFor(model => model.password_hash, htmlAttributes: new { @class = "control-label form-label" })
+            <span class="fw-bolder text-danger">*</span>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.password_hash, new { htmlAttributes = new { @class = "form-control", @id = "password", @minLength = "8", @maxLength = "20", @autocomplete = "off" } })
+                <div class="mt-2 mb-1">
+                    <input type="checkbox" name="showPass" id="showPassword" />
+                    Show Password
+                </div>
+                @Html.ValidationMessageFor(model => model.password_hash, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            <div class="row g-3 align-items-end">
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                    <label for="userCaptcha" class="form-label fw-medium">Captcha <span class="fw-bolder text-danger">*</span></label>
+                    <input type="text" class="form-control d-inline-block" id="userCaptcha" name="userCaptcha">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 captchaSection user-select-none">
+                    <div class="fw-bolder fs-2 mx-2 d-inline-block user-select-none text-white opacity-75" id="digit1" name="digit1">2</div>
+                    <input type="hidden" id="capDigit1" name="capDigit1" />
+
+                    <div class="fw-bolder fs-2 mx-2 d-inline-block user-select-none text-white opacity-75" id="digit2" name="digit2">5</div>
+                    <input type="hidden" id="capDigit2" name="capDigit2" />
+
+                    <div class="fw-bolder fs-2 mx-2 d-inline-block user-select-none text-white opacity-75" id="digit3" name="digit3">8</div>
+                    <input type="hidden" id="capDigit3" name="capDigit3" />
+
+                    <div class="fw-bolder fs-2 mx-2 d-inline-block user-select-none text-white opacity-75" id="digit4" name="digit4">9</div>
+                    <input type="hidden" id="capDigit4" name="capDigit4" />
+
+                    <div class="fw-bolder fs-2 mx-2 d-inline-block user-select-none text-white opacity-75" id="digit5" name="digit5">0</div>
+                    <input type="hidden" id="capDigit5" name="capDigit5" />
+
+                </div>
+            </div>
+        </div>
+
+        @* No Need for the Other Fields in Login Page *@
+
+        <div class="form-group mb-4">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Login" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Not Registered Yet", "Signup", null, new { @class = "mb-5" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            // Disable autocomplete for all fields with class "noAutoComplete"
+            $(".noAutoComplete").attr("autocomplete", "off");
+
+            // Clear autocomplete values for specific fields
+            $("#username, #password").val("");
+            $("#username, #password").text("");
+
+            $("#password").on("keyup", function (e) {
+                console.log("Hello User Password !!")
+                $(this).val($(this).val().toString().replace(" ", ""));
+            });
+
+            $("#showPassword").on("click", function (e) {
+                if ($("#showPassword").prop("checked") === true) {
+                    console.log("Showing Password !!")
+                    $("#password").attr("type", "text")
+                }
+                else {
+                    console.log("hiding Password !!")
+                    $("#password").attr("type", "password");
+                }
+            })
+
+            // Generating the Captcha
+
+            var digit1 = parseInt(Math.random() * 10)
+            var digit2 = parseInt(Math.random() * 10)
+            var digit3 = parseInt(Math.random() * 10)
+            var digit4 = parseInt(Math.random() * 10)
+            var digit5 = parseInt(Math.random() * 10)
+
+            $('#digit1').text(digit1)
+            $('#digit2').text(digit2)
+            $('#digit3').text(digit3)
+            $('#digit4').text(digit4)
+            $('#digit5').text(digit5)
+
+            $('#capDigit1').val(digit1)
+            $('#capDigit2').val(digit2)
+            $('#capDigit3').val(digit3)
+            $('#capDigit4').val(digit4)
+            $('#capDigit5').val(digit5)
+
+
+        });
+
+
+    </script>
+}
+
+@Html.Partial("_AlertScript")

@@ -1,0 +1,49 @@
+﻿@model PaperPlanner_Application.Models.Question
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@Html.Partial("_AlertMessages")
+
+<h2>Details</h2>
+
+<div>
+    <h4>Question</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.quesText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quesText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quesOptions)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quesOptions)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quesAnswer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quesAnswer)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @if (Model.QuestionPaper.qpStatus == "Created")
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.quesId }, new { @class = "btn btn-success" })
+    }
+    @Html.ActionLink("Back to List", "Index", new { id = ViewBag.questionPaperIDInDetails }, new { @class = "btn btn-warning" })
+</p>
+
+@Html.Partial("_AlertScript")

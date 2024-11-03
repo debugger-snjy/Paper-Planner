@@ -1,0 +1,71 @@
+﻿@model PaperPlanner_Application.Models.QuestionPaper
+
+@{
+    ViewBag.Title = "Attempt Paper";
+}
+
+@Html.Partial("_AlertMessages")
+
+<h2>Attempt Your Paper</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        @{
+            DateTime creationDate = Model.qpCreatedDate;
+        }
+        <h4 class="text-center fw-bold">@Model.qpTitle</h4>
+        <div class="d-flex justify-content-between">
+            <h5>Created On : @creationDate.ToLongDateString()</h5>
+            <h5>Created By : @Model.User.fullname</h5>
+        </div>
+        <hr />
+        <div>
+            <dl>
+                @{int count = 0;}
+                @foreach (var questions in ViewBag.QuestionsForQP)
+                {
+                    <div class="questions">
+                        <dt>
+                            @{count = count + 1;}
+                            Question @count :
+                        </dt>
+                        <dd>
+                            @questions.quesText
+                        </dd>
+
+                        <dd>
+                            @{
+                                string[] optionsArray = questions.quesOptions.Split(',');
+                                var option = 1;
+                                foreach (string item in optionsArray)
+                                {
+                                    var buttonNameQuestionID = questions.quesId.ToString();
+                                    var optionName = buttonNameQuestionID + "option" + option;
+                                    <div class="form-check">
+                                        <input class="form-check-input" id=@optionName type="radio" name=@buttonNameQuestionID value=@item required>
+                                        <label class="form-check-label" for=@optionName>@item</label>
+                                    </div>
+                                    option++;
+                                }
+                            }
+                        </dd>
+                    </div>
+                }
+            </dl>
+        </div>
+    </div>
+
+    <div class="submit">
+        @{
+            ViewBag.QuestionCount = count;
+        }
+        <input type="submit" class="btn btn-success" value="Submit Paper">
+        @Html.ActionLink("Cancel Paper", "Index", "Student", null, new { @class = "btn btn-danger" })
+
+    </div>
+}
+
+@Html.Partial("_AlertScript")

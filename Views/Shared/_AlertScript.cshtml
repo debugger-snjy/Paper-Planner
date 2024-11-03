@@ -1,0 +1,29 @@
+﻿<script>
+    $(document).ready(function () {
+        // Hide alert message divs initially
+        $('#successalertBox').hide();
+        $('#dangeralertBox').hide();
+        $('#warningalertBox').hide();
+
+        var alertMsg = "@TempData["alertMsg"]";
+        var alertType = "@TempData["alertType"]";
+
+        // NOTE : Use debugger to add debugging in the JS Code in ASP.NET
+
+        // debugger; // This will add a debugger for JS Code
+        if (alertMsg.trim() !== "") {
+            // Show the corresponding alert box based on alertType
+            if (alertType === "success") {
+                $('#successalertBox').show().fadeIn('fast').delay(2000).fadeOut('slow');
+            } else if (alertType === "warning") {
+                $('#warningalertBox').show().fadeIn('fast').delay(2000).fadeOut('slow');
+            } else {
+                $('#dangeralertBox').show().fadeIn('fast').delay(2000).fadeOut('slow');
+            }
+
+            @{
+                TempData.Clear();
+            }
+        }
+    });
+</script>

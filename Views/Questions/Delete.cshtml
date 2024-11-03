@@ -1,0 +1,53 @@
+﻿@model PaperPlanner_Application.Models.Question
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+@Html.Partial("_AlertMessages")
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Question</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.quesText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quesText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quesOptions)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quesOptions)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quesAnswer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quesAnswer)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-success" />
+            @Html.ActionLink("Back to List", "Index", new { id = ViewBag.questionPaperIDInDelete }, new { @class = "btn btn-warning" })
+        </div>
+    }
+</div>
+
+@Html.Partial("_AlertScript")

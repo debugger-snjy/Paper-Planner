@@ -1,0 +1,87 @@
+﻿@model IEnumerable<PaperPlanner_Application.Models.Marksheet>
+
+@{
+    ViewBag.Title = "ViewResult";
+}
+
+@Html.Partial("_AlertMessages")
+
+<div>
+    <h3>Your Result :</h3>
+    <hr />
+    @{int count = 0;}
+    @foreach (var data in Model)
+    {
+        <div class="my-2">
+            <dl>
+                <dt>
+                    @{count = count + 1;}
+                    Question @count :
+                </dt>
+                <dd>
+                    @data.Question.quesText
+                </dd>
+
+                <dd>
+                    @{
+                        string[] optionsArray = data.Question.quesOptions.Split(',');
+
+                        foreach (string item in optionsArray)
+                        {
+                            var buttonName = "question" + data.Question.quesId.ToString();
+
+                            if (item == data.Answers.AttemptedAns && item == data.Answers.CorrectAns)
+                            {
+                                <div class="form-check" style="background-color:lightgreen">
+                                    <input class="form-check-input readonly-radio" type="radio" checked="checked" />
+                                    <label class="form-check-label" for="question1">@item</label>
+                                </div>
+                            }
+                            else
+                            {
+                                if (item == data.Answers.AttemptedAns)
+                                {
+                                    <div class="form-check" style="background-color:lightcoral">
+                                        <input class="form-check-input readonly-radio" type="radio" checked="checked" />
+                                        <label class="form-check-label" for="question1">@item</label>
+                                    </div>
+                                }
+                                else if (item == data.Answers.CorrectAns)
+                                {
+                                    <div class="form-check" style="background-color:lightgreen">
+
+                                        <input class="form-check-input readonly-radio" type="radio" checked="checked" />
+                                        <label class="form-check-label" for="question1">@item</label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-check">
+
+                                        <input class="form-check-input readonly-radio" type="radio" />
+                                        <label class="form-check-label" for="question1">@item</label>
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+                </dd>
+            </dl>
+        </div>
+    }
+</div>
+
+<hr>
+
+<div>
+    <div>
+        Total Questions : @Model.First().TotalQuestions
+    </div>
+    <div>Correct Questions : @Model.First().CorrectQuestions</div>
+    <div>Incorrect Questions : @Model.First().IncorrectQuestions</div>
+</div>
+
+@Html.ActionLink("Back to All Responses", "ViewSubmissions", "QuestionPapers", new { id = Model.First().Answers.PaperID }, new { @class = "btn btn-dark mt-4" })
+@Html.ActionLink("Back to Question Paper List", "Index", "QuestionPapers", new { @class = "btn btn-dark mt-4" })
+
+@Html.Partial("_AlertScript")

@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+@Html.Partial("_AlertMessages")
+
+<h2>Welcome Teacher !!</h2>
+
+<hr />
+
+<div class="d-flex flex-row">
+
+    @Html.ActionLink("Question Papers", "Index", "QuestionPapers", null, new { @class = "d-block w-100 mx-2 fs-5 fw-bold p-4 btn btn-warning" })
+
+
+</div>
+
+@Html.Partial("_AlertScript")

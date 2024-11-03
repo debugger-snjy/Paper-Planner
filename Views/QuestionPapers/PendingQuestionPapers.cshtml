@@ -1,0 +1,59 @@
+﻿@model IEnumerable<PaperPlanner_Application.Models.QuestionPaper>
+
+@{
+    ViewBag.Title = "PendingQuestionPapers";
+}
+
+@Html.Partial("_AlertMessages")
+
+<h2>Pending Question Papers For Approvals</h2>
+<hr />
+@if (Model.Count() == 0)
+{
+    <h4 class="text-danger">No Pending Papers !</h4>
+}
+else
+{
+    @* Cards Style !! *@
+    foreach (var item in Model)
+    {
+
+        <div class="card my-4">
+            <div class="card-header fs-5 fw-bold d-flex justify-content-between">
+                <div>@item.qpTitle</div>
+                @{
+                    if (item.qpStatus == "Created")
+                    {
+                        <div class="text-danger">Status : @item.qpStatus</div>
+                    }
+                    else if (item.qpStatus == "Sent for Approval, Approval Pending !")
+                    {
+                        <div class="text-warning">Status : @item.qpStatus</div>
+                    }
+                    else
+                    {
+                        <div class="text-success">Status : @item.qpStatus</div>
+                    }
+                }
+            </div>
+            <div class="card-body">
+                <div class="card-title fs-6">@item.qpDescription</div>
+                <div class="">
+                    <div>Creation Date : @item.qpCreatedDate</div>
+                    <div>Created By : @item.User.username (@item.User.role)</div>
+                </div>
+            </div>
+            <div class="card-footer text-body-secondary">
+                <div class="d-flex justify-content-between">
+                    @Html.ActionLink("Approve Question Paper", "ApprovePaper", "QuestionPapers", new { id = item.quesPaperID }, new { @class = "btn btn-success w-100 mx-2 approveBtn", data_id = item.quesPaperID })
+                    @Html.ActionLink("Reject Question Paper", "RejectPaper", "QuestionPapers", new { id = item.quesPaperID }, new { @class = "btn btn-danger w-100 mx-2 rejectBtn", data_id = item.quesPaperID })
+                    @Html.ActionLink("View Questions", "Index", "Questions", new { id = item.quesPaperID }, new { @class = "btn btn-dark w-100 mx-2" })
+                    @Html.ActionLink("View Question Paper", "Details", new { id = item.quesPaperID }, new { @class = "btn btn-dark w-100 mx-2" })
+
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@Html.Partial("_AlertScript")

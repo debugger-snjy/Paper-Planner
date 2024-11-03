@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "ViewPaper";
+}
+
+<h2>ViewPaper</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.qpTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.qpDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.qpCreatedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.qpStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.username)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.qpTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.qpDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.qpCreatedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.qpStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.username)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.quesPaperID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.quesPaperID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.quesPaperID })
+        </td>
+    </tr>
+}
+
+</table>
